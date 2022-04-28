@@ -1,10 +1,13 @@
 const express = require("express");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 const app = express();
+
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(cors());
 
 morgan.token('body', (req, res) => JSON.stringify(req.body))
 app.use(morgan('tiny'));
@@ -59,8 +62,8 @@ app.get("/api/persons/:id", (req, res) => {
 
 app.delete("/api/persons/:id", (req, res) => {
   let personId = Number(req.params.id);
-  PHONEBOOK = PHONEBOOK.filter((p) => p.id === personId);
-
+  PHONEBOOK = PHONEBOOK.filter((p) => p.id !== personId);
+  console.log({PHONEBOOK})
   res.status(204).end();
 });
 
@@ -85,7 +88,7 @@ app.post("/api/persons", morgan(':method :url :body'), (req, res) => {
   });
 });
 
-const PORT = 3001;
+const PORT = process.env.PORT || 3001
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
