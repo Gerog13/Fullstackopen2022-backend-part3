@@ -39,6 +39,10 @@ let PHONEBOOK = [
 //     return req.hostname;
 // })
 
+app.get('/', (req, res) => {
+  res.send('<h2>Hello world</h2>')
+})
+
 app.get("/api/persons", (req, res) => {
   res.json(PHONEBOOK);
 });
